@@ -51,18 +51,48 @@ class LinearAutoencoder(nn.Module):
         encoded = self.encoder(x)
         decoded = self.decoder(encoded)
         return decoded
-    
+
+class ConvolutionalAutoencoder(nn.Module):
+    def __init__(self):
+        super(ConvolutionalAutoencoder, self).__init__()
+        self.encoder1 = nn.Sequential(
+            nn.Conv2d(1,16,3,2,1),
+            nn.ReLU(),
+
+            nn.Conv2d(16,32,3,2,1),
+            nn.ReLU(),
+
+            nn.Conv2d(32,64,7)
+        )
+
+        self.decoder1 = nn.Sequential(
+            nn.ConvTranspose2d(64,32,7),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(32, 16, 3, 2, 1, 1),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(16, 1, 3, 2, 1, 1),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        encoded = self.encoder1(x)
+        decoded = self.decoder1(encoded)
+        return decoded
+
 model = LinearAutoencoder()
+model2 = ConvolutionalAutoencoder()
 
 criterion = nn.MSELoss()
-optimizer = optim.Adam(model.parameters(), lr = 0.001)
+optimizer = optim.Adam(model2.parameters(), lr = 0.001)
 
 n_epochs = 10
 
 for epoch in range(n_epochs):
     for images, label in mnist_load:
-        images = images.view(-1, 784)
-        recon = model(images)
+        #images = images.view(-1, 784)
+        recon = model2(images)
         loss = criterion(images, recon)
         optimizer.zero_grad()
         loss.backward()
@@ -72,8 +102,8 @@ for epoch in range(n_epochs):
 
 for i in range(10):
   a = mnist_data[i][0]
-  b = a.view(-1, 784)
-  c = model(b)
+  #b = a.view(-1, 784)
+  c = model2(a)
   d = c.view(28,28)
   a = a.view(28,28)
   d = d.detach()
