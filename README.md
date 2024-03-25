@@ -1,6 +1,6 @@
-# Generative Model
+# Unsupervised Learning
 
-This repository will contain codes for Generative Models. Generative Models include ***Autoencoder***, ***Restricted Boltzmann Machines (RBM)*** and ***Generative Advesarial Networks (GAN)***
+This repository will contain codes for Unsupervised Learning Models. It include ***Autoencoder***, ***Restricted Boltzmann Machines (RBM)*** and ***Generative Advesarial Networks (GAN)***
 
 **Autoencoders** can be used for the following usages and much more:
 1.  Detecting Anomalies from data
